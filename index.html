@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Aurelia Jewellery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #faf7f2;
+        --sf: #ede4d7;
+        --ch: #e8d8bc;
+        --tx: #2c211c;
+        --mu: #7a6a5f;
+        --gd: #b89b65;
+        --wh: #fff;
+        --ln: #d9cdbb;
+        color-scheme: light;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #1d1612;
+          --sf: #2a201a;
+          --ch: #3a2d24;
+          --tx: #f3ebdf;
+          --mu: #b3a393;
+          --gd: #c9ad78;
+          --wh: #2a201a;
+          --ln: #41342b;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #1d1612;
+        --sf: #2a201a;
+        --ch: #3a2d24;
+        --tx: #f3ebdf;
+        --mu: #b3a393;
+        --gd: #c9ad78;
+        --wh: #2a201a;
+        --ln: #41342b;
+        color-scheme: dark;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+        scroll-behavior: smooth;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          400 15px/1.65 Manrope,
+          system-ui,
+          sans-serif;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        background: none;
+        border: 0;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-weight: 500;
+        line-height: 1.1;
+        margin: 0;
+      }
+      :focus-visible {
+        outline: 2px solid var(--gd);
+        outline-offset: 3px;
+      }
+      .wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .mut {
+        color: var(--mu);
+        margin: 0;
+      }
+      .ann {
+        background: var(--tx);
+        color: var(--bg);
+        text-align: center;
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      header.nav {
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        z-index: 20;
+        background: var(--bg);
+        border-bottom: 1px solid var(--ln);
+      }
+      .nav .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        gap: 16px;
+      }
+      .logo {
+        font:
+          500 28px "Cormorant Garamond",
+          serif;
+        letter-spacing: 0.04em;
+      }
+      .links {
+        display: flex;
+        gap: 28px;
+      }
+      .links a {
+        font-size: 14px;
+        color: var(--mu);
+      }
+      .links a:hover {
+        color: var(--tx);
+      }
+      .ic {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .ic button {
+        padding: 8px;
+        position: relative;
+        border-radius: 50%;
+      }
+      .cnt {
+        position: absolute;
+        top: 0;
+        right: -2px;
+        background: var(--gd);
+        color: #fff;
+        font-size: 10px;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+      }
+      .burger {
+        display: none;
+      }
+      .burger span {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: var(--tx);
+        margin: 5px 0;
+        transition: 0.3s;
+      }
+      .burger.on span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .burger.on span:nth-child(2) {
+        opacity: 0;
+      }
+      .burger.on span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+      .mnav {
+        position: fixed;
+        inset: 0;
+        z-index: 15;
+        background: var(--bg);
+        padding: 120px 28px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 6px;
+        transform: translateY(-100%);
+        transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+      }
+      .mnav.on {
+        transform: none;
+      }
+      .mnav a {
+        font:
+          500 40px "Cormorant Garamond",
+          serif;
+        padding: 6px 0;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        background: var(--tx);
+        color: var(--bg);
+        font-size: 14px;
+        letter-spacing: 0.03em;
+        border: 1px solid var(--tx);
+        transition: 0.25s;
+      }
+      .btn:hover {
+        background: var(--gd);
+        border-color: var(--gd);
+        color: #fff;
+      }
+      .btn.o {
+        background: none;
+        color: var(--tx);
+      }
+      .btn.o:hover {
+        background: var(--tx);
+        color: var(--bg);
+        border-color: var(--tx);
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 5fr 6fr;
+        min-height: 640px;
+        border-bottom: 1px solid var(--ln);
+      }
+      .hero .tx {
+        padding: 72px 40px 72px max(20px, calc((100vw - 1240px) / 2 + 20px));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 24px;
+      }
+      .hero h1 {
+        font-size: clamp(46px, 6.4vw, 92px);
+        animation: rise 1.1s 0.1s both;
+      }
+      .hero p {
+        max-width: 420px;
+        animation: rise 1.1s 0.3s both;
+      }
+      .hero .cta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        animation: rise 1.1s 0.5s both;
+      }
+      .hero .vis {
+        position: relative;
+        background: var(--ch);
+        overflow: hidden;
+        animation: reveal 1.4s cubic-bezier(0.7, 0, 0.2, 1) both;
+      }
+      .hero .vis svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .hero .vis .sm {
+        position: absolute;
+        width: 38%;
+        aspect-ratio: 4/5;
+        left: -6%;
+        bottom: 8%;
+        border: 8px solid var(--bg);
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+      }
+      @keyframes reveal {
+        from {
+          clip-path: inset(0 0 0 100%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+      section {
+        padding: 96px 0;
+      }
+      .sh {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+      .sh h2 {
+        font-size: clamp(34px, 4vw, 54px);
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr 1fr 1.3fr;
+        gap: 20px;
+        align-items: start;
+      }
+      .col:nth-child(even) {
+        margin-top: 56px;
+      }
+      .col .im {
+        aspect-ratio: 3/4;
+      }
+      .col h3 {
+        font-size: 26px;
+        margin-top: 12px;
+      }
+      .im {
+        position: relative;
+        overflow: hidden;
+        background: var(--sf);
+      }
+      .im svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+      }
+      .col:hover svg {
+        transform: scale(1.04);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px 20px;
+      }
+      .card {
+        position: relative;
+      }
+      .card .im {
+        aspect-ratio: 4/5;
+      }
+      .card h3 {
+        font-size: 22px;
+        margin-top: 12px;
+      }
+      .card .alt {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      .card:hover .alt {
+        opacity: 1;
+      }
+      .tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: var(--bg);
+        font-style: normal;
+        font-size: 12px;
+        padding: 3px 10px;
+        z-index: 2;
+      }
+      .pr {
+        margin: 4px 0 0;
+        font-weight: 500;
+      }
+      .pr s {
+        color: var(--mu);
+        font-weight: 400;
+        margin-left: 6px;
+      }
+      .quick {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid var(--ln);
+        font-size: 13px;
+        transition: 0.2s;
+      }
+      .quick:hover {
+        background: var(--tx);
+        color: var(--bg);
+      }
+      .story {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--sf);
+      }
+      .story .im {
+        min-height: 520px;
+      }
+      .story .t {
+        padding: 80px 56px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        align-items: flex-start;
+      }
+      .story h2 {
+        font-size: clamp(36px, 4vw, 56px);
+      }
+      .hl {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+      }
+      .hl div {
+        border-top: 1px solid var(--gd);
+        padding-top: 18px;
+      }
+      .hl svg {
+        stroke: var(--gd);
+        fill: none;
+        stroke-width: 1.4;
+        margin-bottom: 10px;
+      }
+      .hl h3 {
+        font-size: 24px;
+      }
+      .gal {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 150px;
+        gap: 10px;
+      }
+      .gal .im:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 3;
+      }
+      .gal .im:nth-child(2) {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .gal .im:nth-child(3) {
+        grid-column: span 2;
+        grid-row: span 3;
+      }
+      .gal .im:nth-child(4) {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .gal .im:nth-child(5) {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+      footer {
+        background: var(--tx);
+        color: var(--bg);
+        padding: 72px 0 32px;
+      }
+      footer .g {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+        gap: 36px;
+      }
+      footer h3 {
+        font-size: 22px;
+        margin-bottom: 12px;
+      }
+      footer a {
+        display: block;
+        opacity: 0.75;
+        padding: 3px 0;
+      }
+      footer a:hover {
+        opacity: 1;
+      }
+      footer .fine {
+        border-top: 1px solid #ffffff30;
+        margin-top: 48px;
+        padding-top: 20px;
+        font-size: 13px;
+        opacity: 0.7;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .wa {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #25d366;
+        color: #0b2e17;
+        font-weight: 600;
+        opacity: 1 !important;
+      }
+      .shop {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 40px;
+        padding: 48px 0 96px;
+      }
+      .fl h3 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      .fl button,
+      .fl a {
+        display: block;
+        padding: 6px 0;
+        color: var(--mu);
+        text-align: left;
+      }
+      .fl .on {
+        color: var(--tx);
+        font-weight: 600;
+      }
+      .bar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+      }
+      .bar input,
+      .bar select,
+      .qty {
+        background: var(--wh);
+        color: var(--tx);
+        border: 1px solid var(--ln);
+        padding: 11px 14px;
+        font: inherit;
+        border-radius: 0;
+      }
+      .bar input {
+        flex: 1;
+        min-width: 160px;
+      }
+      .fbtn {
+        display: none;
+      }
+      .empty {
+        text-align: center;
+        padding: 80px 20px;
+        grid-column: 1/-1;
+      }
+      .empty h3 {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+      .pd {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 56px;
+        padding: 48px 0 96px;
+      }
+      .pd .main {
+        aspect-ratio: 4/5;
+      }
+      .th {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .th button {
+        width: 76px;
+        aspect-ratio: 4/5;
+        border: 1px solid transparent;
+        padding: 0;
+      }
+      .th .on {
+        border-color: var(--gd);
+      }
+      .pd h1 {
+        font-size: clamp(36px, 4vw, 52px);
+      }
+      .pd .pr {
+        font-size: 22px;
+        margin: 12px 0 18px;
+      }
+      .spec {
+        border-top: 1px solid var(--ln);
+        margin: 22px 0;
+      }
+      .spec div {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--ln);
+      }
+      .sz {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 8px 0 18px;
+      }
+      .sz button {
+        border: 1px solid var(--ln);
+        padding: 8px 16px;
+      }
+      .sz .on {
+        background: var(--tx);
+        color: var(--bg);
+        border-color: var(--tx);
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+      .row .btn {
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+      }
+      .q {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ln);
+      }
+      .q button {
+        width: 34px;
+        height: 34px;
+      }
+      .q span {
+        min-width: 28px;
+        text-align: center;
+      }
+      .help {
+        background: var(--sf);
+        padding: 16px;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      .help a {
+        color: var(--gd);
+        font-weight: 600;
+      }
+      .ov {
+        position: fixed;
+        inset: 0;
+        background: #0007;
+        z-index: 30;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+      }
+      .ov.on {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .dr {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(440px, 100%);
+        background: var(--bg);
+        z-index: 31;
+        transform: translateX(100%);
+        transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .dr.on {
+        transform: none;
+      }
+      .dr header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--ln);
+      }
+      .dr header h3 {
+        font-size: 28px;
+      }
+      .items {
+        flex: 1;
+        overflow: auto;
+        padding: 8px 20px;
+      }
+      .it {
+        display: grid;
+        grid-template-columns: 76px 1fr auto;
+        gap: 14px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--ln);
+        animation: rise 0.4s both;
+      }
+      .it .im {
+        aspect-ratio: 4/5;
+      }
+      .it h4 {
+        margin: 0;
+        font:
+          500 20px "Cormorant Garamond",
+          serif;
+      }
+      .dr footer {
+        background: var(--sf);
+        color: var(--tx);
+        padding: 18px 20px;
+      }
+      .tot {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .dr footer .btn {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin-top: 8px;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+        transform: translate(-50%, 30px);
+        background: var(--tx);
+        color: var(--bg);
+        padding: 12px 22px;
+        z-index: 40;
+        opacity: 0;
+        transition: 0.35s;
+        pointer-events: none;
+      }
+      .toast.on {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .rm {
+        font-size: 12px;
+        color: var(--mu);
+        text-decoration: underline;
+        margin-top: 6px;
+      }
+      @media (max-width: 900px) {
+        .links {
+          display: none;
+        }
+        .burger {
+          display: block;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: 0;
+        }
+        .hero .tx {
+          padding: 48px 20px;
+        }
+        .hero .vis {
+          min-height: 420px;
+          order: -1;
+        }
+        .cols,
+        .hl {
+          grid-template-columns: 1fr 1fr;
+        }
+        .col:nth-child(even) {
+          margin-top: 0;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 24px 12px;
+        }
+        .story {
+          grid-template-columns: 1fr;
+        }
+        .story .t {
+          padding: 48px 20px;
+        }
+        .story .im {
+          min-height: 360px;
+        }
+        footer .g {
+          grid-template-columns: 1fr 1fr;
+        }
+        section {
+          padding: 64px 0;
+        }
+        .shop,
+        .pd {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .fbtn {
+          display: block;
+        }
+        .fl {
+          display: none;
+          border: 1px solid var(--ln);
+          padding: 16px;
+        }
+        .fl.on {
+          display: block;
+        }
+        .gal {
+          grid-template-columns: repeat(2, 1fr);
+          grid-auto-rows: 140px;
+        }
+        .gal .im:nth-child(n) {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+        .gal .im:nth-child(1) {
+          grid-row: span 2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ann">Timeless Elegance, Crafted to Last</div>
+    <header class="nav">
+      <div class="wrap">
+        <button class="burger" id="bg" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <a class="logo" href="#">Aurelia</a>
+        <nav class="links">
+          <a href="#">Home</a><a href="#shop">Collections</a
+          ><a href="#shop-new">New Arrivals</a><a href="#about">About Us</a
+          ><a href="#contact">Contact</a>
+        </nav>
+        <div class="ic">
+          <button id="sr" aria-label="Search">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-4-4" />
+            </svg>
+          </button>
+          <button id="bag" aria-label="Open bag">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path d="M5 8h14l-1 12H6zM9 8a3 3 0 016 0" /></svg
+            ><span class="cnt" id="cnt">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="mnav" id="mn">
+      <a href="#">Home</a><a href="#shop">Collections</a
+      ><a href="#shop-new">New Arrivals</a><a href="#about">About Us</a
+      ><a href="#contact">Contact</a>
+    </div>
+    <main id="app"></main>
+    <footer id="contact">
+      <div class="wrap">
+        <div class="g">
+          <div>
+            <div class="logo">Aurelia</div>
+            <p style="max-width: 300px; opacity: 0.75">
+              Considered jewellery in gold and diamonds, chosen for the moments
+              you’ll want to remember.
+            </p>
+          </div>
+          <div>
+            <h3>Explore</h3>
+            <a href="#shop">All jewellery</a><a href="#shop-new">New arrivals</a
+            ><a href="#shop-best">Bestsellers</a><a href="#about">Our story</a>
+          </div>
+          <div>
+            <h3>Collections</h3>
+            <a href="#shop-gold">Gold</a><a href="#shop-diamond">Diamond</a
+            ><a href="#shop-bridal">Bridal</a
+            ><a href="#shop-everyday">Everyday</a>
+          </div>
+          <div>
+            <h3>Contact</h3>
+            <a href="#" id="phone"></a><a>hello@aurelia.example</a
+            ><a class="wa" id="fwa" target="_blank" rel="noopener"
+              >Chat on WhatsApp</a
+            ><a href="#" style="margin-top: 8px">Instagram</a>
+          </div>
+        </div>
+        <div class="fine">
+          <span>Designed to celebrate your most beautiful moments.</span
+          ><span>© 2026 Aurelia Jewellery</span>
+        </div>
+      </div>
+    </footer>
+    <div class="ov" id="ov"></div>
+    <aside class="dr" id="dr" aria-label="Your bag">
+      <header>
+        <h3>Your bag</h3>
+        <button id="cx" aria-label="Close">✕</button>
+      </header>
+      <div class="items" id="items"></div>
+      <footer id="cf"></footer>
+    </aside>
+    <div class="toast" id="ts" role="status">Added to your bag</div>
+    <script>
+      // ---- Config: replace with the real business number (country code + number, digits only)
+      const WA = "8102732420";
+      const P = [
+        {
+          id: "gold-floral-necklace",
+          name: "Gold Floral Necklace",
+          cat: "Gold",
+          price: 12500,
+          was: 14000,
+          tag: "Bestseller",
+          kind: "necklace",
+          tone: 0,
+          mat: "22k gold",
+          wt: "18 g",
+        },
+        {
+          id: "diamond-stud-earrings",
+          name: "Diamond Stud Earrings",
+          cat: "Diamond",
+          price: 8500,
+          tag: "Bestseller",
+          kind: "earrings",
+          tone: 1,
+          mat: "18k gold, diamond",
+        },
+        {
+          id: "solitaire-engagement-ring",
+          name: "Solitaire Engagement Ring",
+          cat: "Bridal",
+          price: 32000,
+          tag: "New",
+          kind: "ring",
+          tone: 2,
+          mat: "18k gold, diamond",
+          sizes: ["12", "14", "16", "18"],
+        },
+        {
+          id: "everyday-gold-bangle",
+          name: "Everyday Gold Bangle",
+          cat: "Everyday",
+          price: 9800,
+          kind: "bangle",
+          tone: 0,
+          mat: "22k gold",
+          wt: "12 g",
+          sizes: ["2.4", "2.6", "2.8"],
+        },
+        {
+          id: "pearl-drop-pendant",
+          name: "Pearl Drop Pendant",
+          cat: "Everyday",
+          price: 4200,
+          was: 4800,
+          tag: "New",
+          kind: "pendant",
+          tone: 2,
+          mat: "Gold-plated silver",
+        },
+        {
+          id: "bridal-kundan-necklace",
+          name: "Bridal Kundan Necklace",
+          cat: "Bridal",
+          price: 48000,
+          tag: "Bestseller",
+          kind: "necklace",
+          tone: 1,
+          mat: "22k gold",
+        },
+        {
+          id: "diamond-halo-ring",
+          name: "Diamond Halo Ring",
+          cat: "Diamond",
+          price: 21500,
+          tag: "New",
+          kind: "ring",
+          tone: 0,
+          mat: "18k gold, diamond",
+          sizes: ["12", "14", "16", "18"],
+        },
+        {
+          id: "gold-jhumka-earrings",
+          name: "Gold Jhumka Earrings",
+          cat: "Gold",
+          price: 11200,
+          kind: "earrings",
+          tone: 2,
+          mat: "22k gold",
+          wt: "9 g",
+        },
+      ];
+      const CATS = ["Gold", "Diamond", "Bridal", "Everyday"];
+      const $ = (s) => document.querySelector(s),
+        inr = (n) => "₹" + n.toLocaleString("en-IN"),
+        byId = (id) => P.find((p) => p.id === id);
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem("bag") || "[]");
+      } catch (e) {}
+      const save = () => {
+        try {
+          localStorage.setItem("bag", JSON.stringify(cart));
+        } catch (e) {}
+      };
+      // ---- Illustrated product art (no external images)
+      function art(p, v = 0) {
+        const k = (p.tone + v) % 3,
+          bg = ["#EDE4D7", "#2C211C", "#E8D8BC"][k],
+          g = k == 1 ? "#d6b878" : "#B89B65",
+          hl = ["#E8D8BC", "#4a382d", "#FAF7F2"][k];
+        const S = {
+          necklace: `<path d="M70 110Q200 430 330 110" stroke="${g}" stroke-width="3" fill="none"/><path d="M200 330l28 34-28 54-28-54z" fill="${g}"/>`,
+          ring: `<circle cx="200" cy="310" r="92" stroke="${g}" stroke-width="14" fill="none"/><path d="M200 168l30 34-30 34-30-34z" fill="${v ? "#fff" : g}" stroke="${g}" stroke-width="3"/>`,
+          earrings: [130, 270]
+            .map(
+              (x) =>
+                `<path d="M${x} 130v70" stroke="${g}" stroke-width="3"/><circle cx="${x}" cy="240" r="38" fill="none" stroke="${g}" stroke-width="3"/><circle cx="${x}" cy="240" r="12" fill="${g}"/>`,
+            )
+            .join(""),
+          bangle: `<ellipse cx="200" cy="260" rx="120" ry="150" fill="none" stroke="${g}" stroke-width="18"/><ellipse cx="200" cy="260" rx="96" ry="126" fill="none" stroke="${g}" stroke-width="2"/>`,
+          pendant: `<path d="M90 100Q200 300 310 100" stroke="${g}" stroke-width="2" fill="none"/><path d="M200 232v40" stroke="${g}" stroke-width="2"/><circle cx="200" cy="310" r="40" fill="${k == 1 ? "#f3ebdf" : "#fff"}" stroke="${g}" stroke-width="4"/>`,
+        }[p.kind];
+        return `<svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${p.name}"><rect width="400" height="500" fill="${bg}"/><circle cx="${v ? 140 : 260}" cy="${v ? 330 : 230}" r="190" fill="${hl}"/>${S}</svg>`;
+      }
+      // ---- Cart
+      const qtyN = () => cart.reduce((a, i) => a + i.q, 0),
+        sub = () => cart.reduce((a, i) => a + i.q * byId(i.id).price, 0);
+      function add(id, v = "", q = 1) {
+        const i = cart.find((x) => x.id === id && x.v === v);
+        i ? (i.q += q) : cart.push({ id, v, q });
+        save();
+        paint();
+        toast("Added to your bag");
+      }
+      let tt;
+      function toast(m) {
+        const t = $("#ts");
+        t.textContent = m;
+        t.classList.add("on");
+        clearTimeout(tt);
+        tt = setTimeout(() => t.classList.remove("on"), 1800);
+      }
+      function paint() {
+        $("#cnt").textContent = qtyN();
+        $("#items").innerHTML = cart.length
+          ? cart
+              .map((i, n) => {
+                const p = byId(i.id);
+                return `<div class="it"><div class="im">${art(p)}</div><div><h4>${p.name}</h4><p class="mut">${i.v ? "Size " + i.v + " · " : ""}${inr(p.price)}</p><div class="q" style="margin-top:8px"><button data-q="${n}:-1" aria-label="Less">−</button><span>${i.q}</span><button data-q="${n}:1" aria-label="More">+</button></div><br><button class="rm" data-rm="${n}">Remove</button></div><b>${inr(p.price * i.q)}</b></div>`;
+              })
+              .join("")
+          : `<div class="empty"><h3>Your bag is empty</h3><p class="mut">Pieces you add will wait for you here.</p></div>`;
+        $("#cf").innerHTML = cart.length
+          ? `<div class="tot"><span>Subtotal (${qtyN()} items)</span><b>${inr(sub())}</b></div><p class="mut" style="font-size:13px">Final price, availability and delivery are confirmed on WhatsApp.</p><button class="btn" data-wa="cart">Order on WhatsApp</button><button class="btn o" data-close>Continue shopping</button>`
+          : `<button class="btn o" data-close style="width:100%">Continue shopping</button>`;
+      }
+      function msg(list) {
+        const L = list
+          .map((i, n) => {
+            const p = byId(i.id);
+            return `${n + 1}. ${p.name}${i.v ? " (Size " + i.v + ")" : ""}\n   Quantity: ${i.q}\n   Unit Price: ${inr(p.price)}\n   Subtotal: ${inr(p.price * i.q)}`;
+          })
+          .join("\n\n");
+        const n = list.reduce((a, i) => a + i.q, 0),
+          t = list.reduce((a, i) => a + i.q * byId(i.id).price, 0),
+          d = "-------------------------";
+        return `Hello! I would like to place an order.\n\n*Order Summary*\n\nOrder Items:\n\n${L}\n\n${d}\nTotal Items: ${n}\nEstimated Order Total: ${inr(t)}\n${d}\n\nPlease confirm product availability and the next steps for my order.\n\nThank you!`;
+      }
+      const sendWA = (l) =>
+        window.open(
+          `https://wa.me/${WA}?text=${encodeURIComponent(msg(l))}`,
+          "_blank",
+          "noopener",
+        );
+      function drawer(o) {
+        $("#dr").classList.toggle("on", o);
+        $("#ov").classList.toggle("on", o);
+      }
+      // ---- Views
+      const card = (p) =>
+        `<div class="card"><a href="#product-${p.id}"><div class="im">${art(p)}<span class="alt">${art(p, 1)}</span>${p.tag ? `<i class="tag">${p.tag}</i>` : ""}</div><h3>${p.name}</h3><p class="mut">${p.cat}</p><p class="pr">${inr(p.price)}${p.was ? `<s>${inr(p.was)}</s>` : ""}</p></a><button class="quick" data-quick="${p.id}">Add to bag</button></div>`;
+      function home() {
+        const best = P.filter((p) => p.tag === "Bestseller").slice(0, 4),
+          hero = byId("gold-floral-necklace"),
+          r = byId("solitaire-engagement-ring");
+        const pic = [
+          "gold-floral-necklace",
+          "diamond-stud-earrings",
+          "solitaire-engagement-ring",
+          "everyday-gold-bangle",
+        ];
+        return `<div class="hero"><div class="tx"><h1>Jewellery that tells your story</h1><p class="mut">Discover timeless pieces designed to celebrate your most beautiful moments.</p><div class="cta"><a class="btn" href="#shop">Explore collection</a><a class="btn o" href="#about">Discover our story</a></div></div><div class="vis">${art(hero, 2)}<div class="sm im">${art(r, 1)}</div></div></div>
+<section><div class="wrap"><div class="sh"><h2>Four ways to begin</h2></div><div class="cols">${CATS.map((c, i) => `<a class="col" href="#shop-${c.toLowerCase()}"><div class="im">${art(byId(pic[i]), i)}</div><h3>${c === "Everyday" ? "Everyday Elegance" : c === "Bridal" ? "Bridal Collection" : c + " Jewellery"}</h3></a>`).join("")}</div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="sh"><h2>Bestselling jewellery</h2><a class="btn o" href="#shop-best">View all</a></div><div class="grid">${best.map(card).join("")}</div></div></section>
+<div class="story" id="about"><div class="im">${art(byId("bridal-kundan-necklace"), 0)}</div><div class="t"><h2>Crafted with meaning</h2><p class="mut" style="max-width:440px">Every piece is thoughtfully selected to bring together timeless beauty, exceptional craftsmanship, and the moments that matter most.</p><a class="btn" href="#shop">Our story</a></div></div>
+<section><div class="wrap"><div class="hl">${[
+          [
+            "Timeless designs",
+            "Pieces that look as right in twenty years as today.",
+            "M12 3l8 9-8 9-8-9z",
+          ],
+          [
+            "Exceptional craftsmanship",
+            "Finished by hand and checked piece by piece.",
+            "M4 20l9-9M13 4l7 7-3 3-7-7z",
+          ],
+          [
+            "Thoughtful packaging",
+            "Arrives ready to be given.",
+            "M4 9h16v11H4zM2 6h20v3H2zM12 6v14",
+          ],
+          [
+            "Personal assistance",
+            "Real people on WhatsApp, to help you choose.",
+            "M4 5h16v11H9l-5 4z",
+          ],
+        ]
+          .map(
+            (h) =>
+              `<div><svg width="28" height="28" viewBox="0 0 24 24"><path d="${h[2]}"/></svg><h3>${h[0]}</h3><p class="mut">${h[1]}</p></div>`,
+          )
+          .join("")}</div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="sh"><h2>In the studio</h2></div><div class="gal">${P.slice(
+          0,
+          5,
+        )
+          .map((p, i) => `<div class="im">${art(p, i + 1)}</div>`)
+          .join("")}</div></div></section>`;
+      }
+      const S = { cat: "all", q: "", sort: "feat", flag: "" };
+      function shop(a) {
+        S.cat = "all";
+        S.flag = "";
+        if (a === "new" || a === "best") S.flag = a;
+        else if (a) S.cat = a;
+        $("#app").innerHTML =
+          `<div class="wrap"><div class="shop"><div><button class="btn o fbtn" id="fb" style="margin-bottom:12px">Filters</button><div class="fl" id="fl"></div></div><div><div class="bar"><input id="sq" type="search" placeholder="Search jewellery" value="${S.q}" aria-label="Search"><select id="ss" aria-label="Sort"><option value="feat">Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select></div><div class="grid" id="gr" style="grid-template-columns:repeat(3,1fr)"></div></div></div></div>`;
+        $("#ss").value = S.sort;
+        gridPaint();
+      }
+      function gridPaint() {
+        const f = [
+          ["all", "All jewellery"],
+          ...CATS.map((c) => [c.toLowerCase(), c]),
+          ["new", "New arrivals"],
+          ["best", "Bestsellers"],
+        ];
+        const cur = S.flag || S.cat;
+        $("#fl").innerHTML =
+          `<h3>Browse</h3>` +
+          f
+            .map(
+              (x) =>
+                `<a href="#shop${x[0] === "all" ? "" : "-" + x[0]}" class="${cur === x[0] ? "on" : ""}">${x[1]}</a>`,
+            )
+            .join("");
+        let l = P.filter(
+          (p) =>
+            (S.cat === "all" || p.cat.toLowerCase() === S.cat) &&
+            (!S.flag ||
+              (S.flag === "new" ? p.tag === "New" : p.tag === "Bestseller")) &&
+            (p.name + p.cat).toLowerCase().includes(S.q.toLowerCase()),
+        );
+        if (S.sort === "lo") l.sort((a, b) => a.price - b.price);
+        if (S.sort === "hi") l.sort((a, b) => b.price - a.price);
+        $("#gr").innerHTML = l.length
+          ? l.map(card).join("")
+          : `<div class="empty"><h3>Nothing matches yet</h3><p class="mut">Try a different search, or browse the whole collection.</p><br><a class="btn" href="#shop">Clear filters</a></div>`;
+      }
+      const PS = { img: 0, size: null, qty: 1 };
+      function product(id) {
+        const p = byId(id);
+        if (!p) {
+          location.hash = "shop";
+          return;
+        }
+        const w = `Hello! I’m interested in the ${p.name} (${inr(p.price)}). Could you share more details?`;
+        $("#app").innerHTML =
+          `<div class="wrap"><div class="pd"><div><div class="im main">${art(p, PS.img)}</div><div class="th">${[0, 1, 2].map((i) => `<button class="im ${PS.img === i ? "on" : ""}" data-img="${i}" aria-label="Image ${i + 1}">${art(p, i)}</button>`).join("")}</div></div>
+<div><p class="mut"><a href="#shop-${p.cat.toLowerCase()}">${p.cat}</a></p><h1>${p.name}</h1><p class="pr">${inr(p.price)}${p.was ? `<s>${inr(p.was)}</s>` : ""}</p>
+${p.sizes ? `<p style="margin:0">Size</p><div class="sz">${p.sizes.map((s) => `<button class="${PS.size === s ? "on" : ""}" data-sz="${s}">${s}</button>`).join("")}</div>` : ""}
+<p style="margin:0">Quantity</p><div class="q" style="margin:8px 0 14px"><button data-pq="-1" aria-label="Less">−</button><span>${PS.qty}</span><button data-pq="1" aria-label="More">+</button></div>
+<div class="row"><button class="btn o" data-padd="${p.id}">Add to cart</button><button class="btn" data-buy="${p.id}">Buy now</button></div>
+<a class="btn o" style="display:block;text-align:center" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent(w)}">Enquire on WhatsApp</a>
+<div class="spec"><div><span class="mut">Category</span><span>${p.cat}</span></div><div><span class="mut">Material</span><span>${p.mat}</span></div>${p.wt ? `<div><span class="mut">Weight</span><span>${p.wt}</span></div>` : ""}</div>
+<div class="help">Need help choosing? Our team is happy to assist you on WhatsApp.</div></div></div></div>`;
+      }
+      function route() {
+        const h = location.hash.slice(1);
+        scrollTo(0, 0);
+        $("#mn").classList.remove("on");
+        $("#bg").classList.remove("on");
+        if (h.startsWith("product-")) {
+          PS.img = 0;
+          PS.size = null;
+          PS.qty = 1;
+          product(h.slice(8));
+        } else if (h.startsWith("shop")) {
+          shop(h.slice(5));
+        } else {
+          $("#app").innerHTML = home();
+          if (h === "about") $("#about").scrollIntoView();
+        }
+      }
+      function needSize(p) {
+        if (p.sizes && !PS.size) {
+          toast("Please choose a size");
+          return true;
+        }
+      }
+      document.addEventListener("click", (e) => {
+        const t = e.target.closest("button,a");
+        if (!t) return;
+        const d = t.dataset;
+        if (d.quick) {
+          add(d.quick);
+        }
+        if (d.q) {
+          const [n, s] = d.q.split(":");
+          cart[n].q += +s;
+          if (cart[n].q < 1) cart.splice(n, 1);
+          save();
+          paint();
+        }
+        if (d.rm) {
+          cart.splice(d.rm, 1);
+          save();
+          paint();
+        }
+        if ("close" in d) drawer(false);
+        if (d.wa) sendWA(cart);
+        if (d.img) {
+          PS.img = +d.img;
+          product(location.hash.slice(9));
+        }
+        if (d.sz) {
+          PS.size = d.sz;
+          product(location.hash.slice(9));
+        }
+        if (d.pq) {
+          PS.qty = Math.max(1, PS.qty + +d.pq);
+          product(location.hash.slice(9));
+        }
+        if (d.padd) {
+          const p = byId(d.padd);
+          if (needSize(p)) return;
+          add(p.id, PS.size || "", PS.qty);
+        }
+        if (d.buy) {
+          const p = byId(d.buy);
+          if (needSize(p)) return;
+          sendWA([{ id: p.id, v: PS.size || "", q: PS.qty }]);
+        }
+      });
+      $("#bag").onclick = () => drawer(true);
+      $("#cx").onclick = $("#ov").onclick = () => drawer(false);
+      $("#bg").onclick = (e) => {
+        $("#mn").classList.toggle("on");
+        e.currentTarget.classList.toggle("on");
+      };
+      $("#sr").onclick = () => {
+        if (!location.hash.startsWith("#shop")) location.hash = "shop";
+        setTimeout(() => $("#sq") && $("#sq").focus(), 50);
+      };
+      document.addEventListener("input", (e) => {
+        if (e.target.id === "sq") {
+          S.q = e.target.value;
+          gridPaint();
+        }
+      });
+      document.addEventListener("change", (e) => {
+        if (e.target.id === "ss") {
+          S.sort = e.target.value;
+          gridPaint();
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (e.target.id === "fb") $("#fl").classList.toggle("on");
+      });
+      $("#fwa").href = `https://wa.me/${WA}`;
+      $("#phone").textContent = "+" + WA.replace(/^(\d{2})(\d+)/, "$1 $2");
+      addEventListener("hashchange", route);
+      paint();
+      route();
+    </script>
+  </body>
+</html>
